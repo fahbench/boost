@@ -1,4 +1,4 @@
-//  This file was automatically generated on Fri Jul  1 18:47:25 2016
+//  This file was automatically generated on Mon Dec 12 19:37:08 2016
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -312,10 +312,25 @@ namespace boost_no_cxx14_aggregate_nsdmi = empty_boost;
 #else
 namespace boost_no_cxx14_return_type_deduction = empty_boost;
 #endif
+#ifndef BOOST_NO_CXX14_STD_EXCHANGE
+#include "boost_no_cxx14_std_exchange.ipp"
+#else
+namespace boost_no_cxx14_std_exchange = empty_boost;
+#endif
 #ifndef BOOST_NO_CXX14_VARIABLE_TEMPLATES
 #include "boost_no_cxx14_var_templ.ipp"
 #else
 namespace boost_no_cxx14_variable_templates = empty_boost;
+#endif
+#ifndef BOOST_NO_CXX17_STD_APPLY
+#include "boost_no_cxx17_std_apply.ipp"
+#else
+namespace boost_no_cxx17_std_apply = empty_boost;
+#endif
+#ifndef BOOST_NO_CXX17_STD_INVOKE
+#include "boost_no_cxx17_std_invoke.ipp"
+#else
+namespace boost_no_cxx17_std_invoke = empty_boost;
 #endif
 #ifndef BOOST_NO_CXX11_HDR_FUNCTIONAL
 #include "boost_no_cxx_hdr_functional.ipp"
@@ -1556,9 +1571,24 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_cxx14_std_exchange::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX14_STD_EXCHANGE at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_cxx14_variable_templates::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX14_VARIABLE_TEMPLATES at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_cxx17_std_apply::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX17_STD_APPLY at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_cxx17_std_invoke::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX17_STD_INVOKE at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_cxx11_hdr_functional::test())

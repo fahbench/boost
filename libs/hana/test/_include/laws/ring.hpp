@@ -8,11 +8,19 @@
 #include <boost/hana/assert.hpp>
 #include <boost/hana/bool.hpp>
 #include <boost/hana/concept/comparable.hpp>
-#include <boost/hana/core/when.hpp>
-#include <boost/hana/functional/capture.hpp>
-#include <boost/hana/lazy.hpp>
+#include <boost/hana/concept/constant.hpp>
 #include <boost/hana/concept/monoid.hpp>
 #include <boost/hana/concept/ring.hpp>
+#include <boost/hana/core/when.hpp>
+#include <boost/hana/equal.hpp>
+#include <boost/hana/functional/capture.hpp>
+#include <boost/hana/lazy.hpp>
+#include <boost/hana/mult.hpp>
+#include <boost/hana/not_equal.hpp>
+#include <boost/hana/one.hpp>
+#include <boost/hana/plus.hpp>
+#include <boost/hana/power.hpp>
+#include <boost/hana/value.hpp>
 
 #include <laws/base.hpp>
 
@@ -28,7 +36,7 @@ namespace boost { namespace hana { namespace test {
         template <typename Xs>
         TestRing(Xs xs) {
             hana::for_each(xs, hana::capture(xs)([](auto xs, auto x) {
-                static_assert(Ring<decltype(x)>::value, "");
+                static_assert(Ring<decltype(x)>{}, "");
 
                 foreach2(xs, hana::capture(x)([](auto x, auto y, auto z) {
                     // associativity

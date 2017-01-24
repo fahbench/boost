@@ -2,38 +2,38 @@
 <library-reference id="gregorian_reference"><title>Gregorian Reference</title><header name="boost/date_time/gregorian/conversion.hpp">
 <namespace name="boost">
 <namespace name="gregorian">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="to_tm"><type>std::tm</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>Converts a date to a tm struct. Throws out_of_range exception if date is a special value. </purpose></function>
 <function name="date_from_tm"><type><classname>date</classname></type><parameter name="datetm"><paramtype>const std::tm &amp;</paramtype></parameter><purpose>Converts a tm structure into a date dropping the any time values. </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -84,74 +84,30 @@
 <namespace name="gregorian">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="to_simple_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
+<function name="to_simple_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>To YYYY-mmm-DD string where mmm 3 char month name. Example: 2002-Jan-01. </purpose></function>
 <function name="to_simple_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter></function>
+<function name="to_simple_string"><type>std::string</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Convert date period to simple string. Example: [2002-Jan-01/2002-Jan-02]. </purpose></function>
 <function name="to_iso_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter></function>
+<function name="to_iso_string"><type>std::string</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Date period to iso standard format CCYYMMDD/CCYYMMDD. Example: 20021225/20021231. </purpose></function>
 <function name="to_iso_extended_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
+<function name="to_iso_extended_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>Convert to iso extended format string CCYY-MM-DD. Example 2002-12-31. </purpose></function>
 <function name="to_iso_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
+<function name="to_iso_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>Convert to iso standard string YYYYMMDD. Example: 20021231. </purpose></function>
 <function name="to_sql_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
+<function name="to_sql_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
 <function name="to_simple_wstring"><type>std::wstring</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Convert date period to simple string. Example: [2002-Jan-01/2002-Jan-02]. </purpose></function>
 <function name="to_simple_wstring"><type>std::wstring</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>To YYYY-mmm-DD string where mmm 3 char month name. Example: 2002-Jan-01. </purpose></function>
 <function name="to_iso_wstring"><type>std::wstring</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Date period to iso standard format CCYYMMDD/CCYYMMDD. Example: 20021225/20021231. </purpose></function>
@@ -168,18 +124,62 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
 <header name="boost/date_time/gregorian/formatters_limited.hpp">
 <namespace name="boost">
 <namespace name="gregorian">
-<function name="to_simple_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>To YYYY-mmm-DD string where mmm 3 char month name. Example: 2002-Jan-01. </purpose></function>
-<function name="to_simple_string"><type>std::string</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Convert date period to simple string. Example: [2002-Jan-01/2002-Jan-02]. </purpose></function>
-<function name="to_iso_string"><type>std::string</type><parameter name="d"><paramtype>const date_period &amp;</paramtype></parameter><purpose>Date period to iso standard format CCYYMMDD/CCYYMMDD. Example: 20021225/20021231. </purpose></function>
-<function name="to_iso_extended_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>Convert to iso extended format string CCYY-MM-DD. Example 2002-12-31. </purpose></function>
-<function name="to_iso_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter><purpose>Convert to iso standard string YYYYMMDD. Example: 20021231. </purpose></function>
-<function name="to_sql_string"><type>std::string</type><parameter name="d"><paramtype>const <classname>date</classname> &amp;</paramtype></parameter></function>
+
+
+
+
+
+
 
 
 
@@ -834,18 +834,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; charT, traits &gt; &amp;</type><template>
           <template-type-parameter name="charT"/>
           <template-type-parameter name="traits"/>
@@ -911,6 +899,18 @@
 <function name="operator&gt;&gt;"><type>std::basic_istream&lt; charT &gt; &amp;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; charT &gt; &amp;</paramtype></parameter><parameter name="wd"><paramtype><classname>greg_weekday</classname> &amp;</paramtype></parameter><purpose>operator&gt;&gt; for <classname alt="boost::gregorian::greg_weekday">gregorian::greg_weekday</classname> - throws exception if invalid weekday given </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1044,7 +1044,10 @@
 </namespace>
 </header>
 <header name="boost/date_time/gregorian/greg_serialize.hpp">
-<function name="BOOST_SERIALIZATION_SPLIT_FREE"><type/><parameter name=""><paramtype>::<classname>boost::gregorian::date_duration</classname></paramtype></parameter><description><para>Method that does serialization for gregorian::date – splits to load/save </para></description></function>
+<namespace name="serialization">
+<function name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="d"><paramtype>::<classname>boost::gregorian::date</classname> &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter><description><para>Method that does serialization for gregorian::date – splits to load/save </para></description></function>
 <function name="save"><type>void</type><template>
           <template-type-parameter name="Archive"/>
         </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="d"><paramtype>const ::<classname>boost::gregorian::date</classname> &amp;</paramtype></parameter><parameter name="int"><paramtype>unsigned</paramtype></parameter><purpose>Function to save gregorian::date objects using serialization lib. </purpose><description><para>Dates are serialized into a string for transport and storage. While it would be more efficient to store the internal integer used to manipulate the dates, it is an unstable solution. </para></description></function>
@@ -1171,6 +1174,7 @@
 <function name="load_construct_data"><type>void</type><template>
           <template-type-parameter name="Archive"/>
         </template><parameter name=""><paramtype>Archive &amp;</paramtype></parameter><parameter name="fkda"><paramtype>gregorian::first_kday_after *</paramtype></parameter><parameter name="int"><paramtype>const unsigned</paramtype></parameter><purpose>override needed b/c no default constructor </purpose></function>
+</namespace>
 </header>
 <header name="boost/date_time/gregorian/greg_weekday.hpp">
 <namespace name="boost">
@@ -1460,6 +1464,40 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; CharT, TraitsT &gt; &amp;</type><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="TraitsT"/>
@@ -1556,40 +1594,6 @@
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="Traits"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="fkb"><paramtype>first_day_of_the_week_before &amp;</paramtype></parameter><purpose>input operator for first_day_of_the_week_before </purpose></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

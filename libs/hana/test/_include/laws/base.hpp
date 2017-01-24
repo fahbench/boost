@@ -5,10 +5,6 @@
 #ifndef BOOST_HANA_TEST_LAWS_BASE_HPP
 #define BOOST_HANA_TEST_LAWS_BASE_HPP
 
-// Hack to make sure tests that include this are not missing includes, since
-// the include scheme changed at some point and it caused major breakage.
-#include <boost/hana.hpp>
-
 #include <boost/hana/and.hpp>
 #include <boost/hana/bool.hpp>
 #include <boost/hana/core/when.hpp>
@@ -258,29 +254,27 @@ namespace boost { namespace hana {
         };
 
         template <int i>
-        using eq = integer<i, Policy::Comparable | Policy::Runtime>;
+        struct eq : integer<i, Policy::Comparable | Policy::Runtime> { };
 
         template <int i>
-        using ct_eq = integer<i, Policy::Comparable | Policy::Constant>;
+        struct ct_eq : integer<i, Policy::Comparable | Policy::Constant> { };
 
         template <int i>
-        using cx_eq = integer<i, Policy::Comparable | Policy::Constexpr>;
+        struct cx_eq : integer<i, Policy::Comparable | Policy::Constexpr> { };
 
         template <int i>
-        using ord = integer<i, Policy::Orderable | Policy::Runtime>;
+        struct ord : integer<i, Policy::Orderable | Policy::Runtime> { };
 
         template <int i>
-        using ct_ord = integer<i, Policy::Orderable | Policy::Constant>;
+        struct ct_ord : integer<i, Policy::Orderable | Policy::Constant> { };
 
         template <int i>
-        using cx_ord = integer<i, Policy::Orderable | Policy::Constexpr>;
+        struct cx_ord : integer<i, Policy::Orderable | Policy::Constexpr> { };
 
         template <int i>
-        using _constant = integer<i,
-              Policy::Constant
-            | Policy::Comparable
-            | Policy::Orderable
-        >;
+        struct _constant
+            : integer<i, Policy::Constant | Policy::Comparable | Policy::Orderable>
+        { };
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -296,7 +290,7 @@ namespace boost { namespace hana {
         (policy & test::Policy::Constant) &&
         hana::IntegralConstant<C>::value
     >>
-        : embedding<is_embedded<typename C::value_type, int>{}>
+        : embedding<is_embedded<typename C::value_type, int>::value>
     {
         template <typename N>
         static constexpr auto apply(N const&) {

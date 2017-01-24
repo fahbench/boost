@@ -17,7 +17,7 @@ template <class T>
 struct self_assign_base : public test::exception_base
 {
     test::random_values<T> values;
-    self_assign_base(int count = 0) : values(count) {}
+    self_assign_base(std::size_t count = 0) : values(count) {}
 
     typedef T data_type;
     T init() const { return T(values.begin(), values.end()); }
@@ -112,6 +112,12 @@ struct assign_test4 : assign_values<T>
 };
 
 template <class T>
+struct assign_test4a : assign_values<T>
+{
+    assign_test4a() : assign_values<T>(10, 100, 1, 2) {}
+};
+
+template <class T>
 struct assign_test5 : assign_values<T>
 {
     assign_test5() : assign_values<T>(5, 60, 0, 0, 1.0f, 0.1f) {}
@@ -136,7 +142,7 @@ struct equivalent_test1 : assign_base<T>
 
 EXCEPTION_TESTS(
     (self_assign_test1)(self_assign_test2)
-    (assign_test1)(assign_test2)(assign_test3)(assign_test4)(assign_test5)
+    (assign_test1)(assign_test2)(assign_test3)(assign_test4)(assign_test4a)(assign_test5)
     (equivalent_test1),
     CONTAINER_SEQ)
 RUN_TESTS()

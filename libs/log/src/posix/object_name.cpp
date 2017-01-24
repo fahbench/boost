@@ -14,8 +14,18 @@
  */
 
 #include <boost/log/detail/config.hpp>
-#include <pwd.h>
 #include <unistd.h>
+#include <sys/types.h>
+#if defined(__ANDROID__) && (__ANDROID_API__+0) < 21
+#include <sys/syscall.h>
+#if !defined(__CRYSTAX__)
+// Until Android API version 21 Google NDK does not provide getpwuid_r
+#define BOOST_LOG_NO_GETPWUID_R
+#endif
+#endif
+#if !defined(BOOST_LOG_NO_GETPWUID_R)
+#include <pwd.h>
+#endif
 #include <cstddef>
 #include <cstring>
 #include <limits>
@@ -37,6 +47,14 @@ BOOST_LOG_OPEN_NAMESPACE
 namespace ipc {
 
 BOOST_LOG_ANONYMOUS_NAMESPACE {
+
+#if defined(__ANDROID__) && (__ANDROID_API__+0) < 21
+// Until Android API version 21 NDK does not define getsid wrapper in libc, although there is the corresponding syscall
+inline pid_t getsid(pid_t pid) BOOST_NOEXCEPT
+{
+    return static_cast< pid_t >(::syscall(__NR_getsid, pid));
+}
+#endif
 
 //! Formats an integer identifier into the string
 template< typename Identifier >
@@ -76,6 +94,7 @@ std::string get_scope_prefix(object_name::scope ns)
         {
             const uid_t uid = getuid();
 
+#if !defined(BOOST_LOG_NO_GETPWUID_R)
             long limit = sysconf(_SC_GETPW_R_SIZE_MAX);
             if (limit <= 0)
                 limit = 65536;
@@ -107,6 +126,10 @@ std::string get_scope_prefix(object_name::scope ns)
                 std::memset(&string_storage[0], 0, string_storage.size());
                 throw;
             }
+#else
+            prefix += "uid.";
+            format_id(uid, prefix);
+#endif
         }
         break;
 

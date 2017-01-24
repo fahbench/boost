@@ -53,17 +53,17 @@ scheduler::release_terminated_() noexcept {
     }
 }
 
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
 void
 scheduler::remote_ready2ready_() noexcept {
-    // protect for concurrent access
-    std::unique_lock< std::mutex > lk( remote_ready_mtx_);
+    context * ctx = nullptr;
     // get context from remote ready-queue
-    for ( context * ctx : remote_ready_queue_) {
+    while ( nullptr != ( ctx = remote_ready_queue_.pop() ) ) {
         // store context in local queues
         set_ready( ctx);
     }
-    remote_ready_queue_.clear();
 }
+#endif
 
 void
 scheduler::sleep2ready_() noexcept {
@@ -112,7 +112,8 @@ scheduler::~scheduler() {
     // no context' in worker-queue
     BOOST_ASSERT( worker_queue_.empty() );
     BOOST_ASSERT( terminated_queue_.empty() );
-    BOOST_ASSERT( remote_ready_queue_.empty() );
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
+#endif
     BOOST_ASSERT( sleep_queue_.empty() );
     // set active context to nullptr
     context::reset_active();
@@ -142,8 +143,10 @@ scheduler::dispatch() noexcept {
         }
         // release terminated context'
         release_terminated_();
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
         // get context' from remote ready-queue
         remote_ready2ready_();
+#endif
         // get sleeping context'
         sleep2ready_();
         // get next ready context
@@ -197,6 +200,7 @@ scheduler::set_ready( context * ctx) noexcept {
     algo_->awakened( ctx);
 }
 
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
 void
 scheduler::set_remote_ready( context * ctx) noexcept {
     BOOST_ASSERT( nullptr != ctx);
@@ -208,14 +212,12 @@ scheduler::set_remote_ready( context * ctx) noexcept {
     // context ctx might in wait-/ready-/sleep-queue
     // we do not test this in this function
     // scheduler::dispatcher() has to take care
-    // protect for concurrent access
-    std::unique_lock< std::mutex > lk( remote_ready_mtx_);
     // push new context to remote ready-queue
-    remote_ready_queue_.push_back( ctx);
-    lk.unlock();
+    remote_ready_queue_.push( ctx);
     // notify scheduler
     algo_->notify();
 }
+#endif
 
 #if (BOOST_EXECUTION_CONTEXT==1)
 void
@@ -356,7 +358,11 @@ scheduler::attach_main_context( context * main_ctx) noexcept {
     // by the system, e.g. main()- or thread-context
     // should not be in worker-queue
     main_ctx_ = main_ctx;
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
+    main_ctx_->scheduler_.store( this, std::memory_order_relaxed);
+#else
     main_ctx_->scheduler_ = this;
+#endif
 }
 
 void
@@ -374,7 +380,11 @@ scheduler::attach_dispatcher_context( intrusive_ptr< context > dispatcher_ctx) n
     // if the main context tries to suspend the first time
     // the dispatcher-context is resumed and
     // scheduler::dispatch() is executed
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
+    dispatcher_ctx_->scheduler_.store( this, std::memory_order_relaxed);
+#else
     dispatcher_ctx_->scheduler_ = this;
+#endif
     algo_->awakened( dispatcher_ctx_.get() );
 }
 
@@ -386,9 +396,14 @@ scheduler::attach_worker_context( context * ctx) noexcept {
     BOOST_ASSERT( ! ctx->terminated_is_linked() );
     BOOST_ASSERT( ! ctx->wait_is_linked() );
     BOOST_ASSERT( ! ctx->worker_is_linked() );
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
     std::atomic_thread_fence( std::memory_order_acquire);
+    BOOST_ASSERT( nullptr == ctx->scheduler_.load( std::memory_order_relaxed) );
+    ctx->scheduler_.store( this, std::memory_order_relaxed);
+#else
     BOOST_ASSERT( nullptr == ctx->scheduler_);
     ctx->scheduler_ = this;
+#endif
     ctx->worker_link( worker_queue_);
 }
 
@@ -402,8 +417,12 @@ scheduler::detach_worker_context( context * ctx) noexcept {
     BOOST_ASSERT( ! ctx->wait_is_linked() );
     BOOST_ASSERT( ! ctx->is_context( type::pinned_context) );
     ctx->worker_unlink();
-    ctx->scheduler_ = nullptr;
+#if ! defined(BOOST_FIBERS_NO_ATOMICS)
+    ctx->scheduler_.store( nullptr, std::memory_order_relaxed);
     std::atomic_thread_fence( std::memory_order_release);
+#else
+    ctx->scheduler_ = nullptr;
+#endif
 }
 
 }}
